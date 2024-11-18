@@ -1,5 +1,11 @@
-use bevy::{color::palettes::tailwind::*, prelude::*};
+mod camera;
+mod car;
+mod world;
+
+use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
+use camera::CameraPlugin;
+use world::WorldPlugin;
 
 fn main() {
     App::new()
@@ -7,65 +13,23 @@ fn main() {
             DefaultPlugins,
             RapierPhysicsPlugin::<NoUserData>::default(),
             RapierDebugRenderPlugin::default(),
+            CameraPlugin,
+            WorldPlugin,
         ))
-        .add_systems(Startup, (spawn_camera, spawn_objects))
         .run();
 }
 
-fn spawn_camera(mut commands: Commands) {
-    commands.spawn(Camera3dBundle {
-        transform: Transform::from_xyz(-6.0, 6.0, 12.0).looking_at(Vec3::ZERO, Vec3::Y),
-        ..Default::default()
-    });
-}
+/*  --- Project Plans ---
 
-fn spawn_objects(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-) {
-    // Ground
-    commands.spawn((
-        Collider::cuboid(100.0, 0.1, 100.0),
-        PbrBundle {
-            mesh: meshes.add(Cuboid::new(200.0, 0.2, 200.0)),
-            material: materials.add(StandardMaterial {
-                base_color: GRAY_500.into(),
-                ..default()
-            }),
-            transform: Transform::from_xyz(0.0, 0.0, 0.0),
-            ..default()
-        },
-    ));
+    Goal: A simple car physics simulation
+        - WASD controls for driving and steering
+        - A simple suspension system that just goes up and down
+        - Wheels that carry the cars forces into the ground etc.
 
-    // Cube
-    commands.spawn((
-        PbrBundle {
-            mesh: meshes.add(Cuboid::from_size(Vec3::splat(2.0))),
-            material: materials.add(StandardMaterial {
-                base_color: ORANGE_500.into(),
-                perceptual_roughness: 1.0,
-                ..default()
-            }),
-            transform: Transform::from_xyz(0.0, 1.5, 0.0),
-            ..default()
-        },
-        RigidBody::Dynamic,
-        Collider::cuboid(1.0, 1.0, 1.0),
-    ));
+        Wheels should be able to slip / drift, and I want FWD / RWD / AWD,
+        but the amount of grip each tire has on the ground doesn't need to be realistic
 
-    // Light
-    commands.spawn(DirectionalLightBundle {
-        directional_light: DirectionalLight {
-            shadows_enabled: true,
-            illuminance: 10_000.0,
-            ..default()
-        },
-        transform: Transform {
-            translation: Vec3::new(0.0, 20.0, 0.0),
-            rotation: Quat::from_rotation_x((-45.0 as f32).to_radians()),
-            ..default()
-        },
-        ..default()
-    });
-}
+        The camera should smoothly follow the car, following the cars rotation.
+        The player should be able to rotate the camera around and the camera should then stay in that adjusted position relative to the car.
+
+*/
