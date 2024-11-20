@@ -37,7 +37,7 @@ fn spawn_objects(
                 perceptual_roughness: 1.0,
                 ..default()
             }),
-            transform: Transform::from_xyz(0.0, 1.5, 0.0),
+            transform: Transform::from_xyz(5.0, 1.5, -15.0),
             ..default()
         },
         RigidBody::Dynamic,

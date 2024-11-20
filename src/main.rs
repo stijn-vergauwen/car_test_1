@@ -5,6 +5,7 @@ mod world;
 use bevy::prelude::*;
 use bevy_rapier3d::prelude::*;
 use camera::CameraPlugin;
+use car::CarPlugin;
 use world::WorldPlugin;
 
 fn main() {
@@ -15,6 +16,7 @@ fn main() {
             RapierDebugRenderPlugin::default(),
             CameraPlugin,
             WorldPlugin,
+            CarPlugin,
         ))
         .run();
 }
